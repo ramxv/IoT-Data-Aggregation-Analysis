@@ -8,7 +8,7 @@ This project collects, stores, and analyzes IoT sensor data using Flask and Hado
 
 ```
 project-root/
-│── flask-server/         # Flask application
+│── flask/         # Flask application
 │   ├── app.py           # Main Flask app
 │   ├── templates/       # HTML templates (if using render_template)
 │   ├── static/          # Static files (CSS, JS, images)
@@ -17,10 +17,6 @@ project-root/
 │── sensors/             # Virtual sensor container
 │   ├── sensor.py        # Sensor script
 │   ├── Dockerfile       # Dockerfile for sensor containers
-│
-│── hadoop/              # Hadoop batch processing container
-│   ├── process.py       # Hadoop processing script
-│   ├── Dockerfile       # Dockerfile for Hadoop container
 │
 │── database.py
 ```
@@ -40,9 +36,6 @@ docker build -t flask-server .
 cd ../sensors
 docker build -t sensor-image .
 
-# Hadoop image
-cd ../hadoop
-docker build -t hadoop-container .
 ```
 
 ### 2. Run Containers
@@ -64,12 +57,6 @@ docker run -d --name air_quality_sensor sensor-image python sensor.py air-qualit
 docker run -d --name co2_sensor sensor-image python sensor.py co2
 ```
 
-#### Hadoop
-
-```sh
-docker run -d --name hadoop-container hadoop-container
-```
-
 ### 3. Network Setup
 
 Since Docker Compose is not used, create a network manually and connect all containers:
@@ -80,7 +67,6 @@ docker network create iot-network
 # Connect containers to the network
 docker network connect iot-network flask-server
 docker network connect iot-network sensor-image
-docker network connect iot-network hadoop-container
 ```
 
 ## Troubleshooting
