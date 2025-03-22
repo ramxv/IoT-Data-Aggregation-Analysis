@@ -1,10 +1,14 @@
 FROM python:3.12-bookworm
 
-WORKDIR /app
+WORKDIR /flask-server
+
+COPY app.py .
+
+COPY ./templates /flask-server/templates
+
+COPY ./static /flask-server/static
 
 RUN pip install Flask
-
-COPY /app.py .
 
 EXPOSE 8080
 
