@@ -1,0 +1,22 @@
+# Ignore database files
+iot_data.db
+
+# Ignore Python compiled files
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore virtual environments
+venv/
+.env
+*.env
+
+# Ignore Docker artifacts
+**/Dockerfile~
+
+# Ignore IDE/editor files
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
