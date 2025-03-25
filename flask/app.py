@@ -39,6 +39,45 @@ def store_sensor_data():
         return jsonify({"error": str(ex)}), 500  # Return JSON error response
 
 
+@app.route("/retrieve")
+def retrieve_sensor_data():
+    sensor_id = request.args.get("sensor_id")
+    start_time = request.args.get("start_time")
+    end_time = request.args.get("end_time")
+    conn = sqlite3.connect(DB)
+    cursor = conn.cursor()
+
+    if not sensor_id or not start_time or not end_time:
+        return render_template(
+            "error.html", message="Error. Missing parameter on the URL"
+        )
+
+    retrieve_query = """
+        SELECT type_id, timestamp, value 
+        FROM measurements 
+        WHERE type_id = ? 
+        AND timestamp BETWEEN ? AND ? 
+        ORDER BY type_id, timestamp ASC
+    """
+    table_col_query = """ SELECT unit FROM sensortypes WHERE type_id = ? """
+
+    cursor.execute(retrieve_query, (sensor_id, start_time, end_time))
+    result = cursor.fetchall()
+
+    cursor.execute(table_col_query, (sensor_id))
+    result_col = cursor.fetchone()
+
+    conn.close()
+
+    retrieve_data = [
+        {"type_id": row[0], "timestamp": row[1], "value": row[2]} for row in result
+    ]
+
+    return render_template(
+        "retrieve.html", sensor_id=sensor_id, sensor_col=result_col, data=retrieve_data
+    )
+
+
 @app.route("/store", methods=["GET"])
 def get_sensor_data():
     """Retrieve all sensor data."""
