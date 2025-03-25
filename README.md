@@ -18,7 +18,6 @@ project-root/
 │   ├── sensor.py        # Sensor script
 │   ├── Dockerfile       # Dockerfile for sensor containers
 │
-│── database.py
 ```
 
 ## Setup Instructions
@@ -29,21 +28,29 @@ Run the following commands to build the Docker images for each component:
 
 ```sh
 # Flask server image
-cd flask-server
+cd flask
 docker build -t flask-server .
 
 # Sensor image
-cd ../sensors
+cd sensors
 docker build -t sensor-image .
 
 ```
 
-### 2. Run Containers
+### 2. Create Docker network
+
+Run the following command to create the Docker network:
+
+```sh
+docker network create iot-network
+```
+
+### 3. Run Containers
 
 #### Flask Server
 
 ```sh
-docker run -d --name flask-server -p 5000:5000 flask-server
+docker run -d --name flask_server --network=iot-network -p 8080:8080 flask-server
 ```
 
 #### Sensors
@@ -51,22 +58,10 @@ docker run -d --name flask-server -p 5000:5000 flask-server
 You can run multiple sensors with different types:
 
 ```sh
-docker run -d --name temp_sensor sensor-image python sensor.py temperature
-docker run -d --name pressure_sensor sensor-image python sensor.py pressure
-docker run -d --name air_quality_sensor sensor-image python sensor.py air-quality
-docker run -d --name co2_sensor sensor-image python sensor.py co2
-```
-
-### 3. Network Setup
-
-Since Docker Compose is not used, create a network manually and connect all containers:
-
-```sh
-docker network create iot-network
-
-# Connect containers to the network
-docker network connect iot-network flask-server
-docker network connect iot-network sensor-image
+docker run -d --name temp_sensor --network=iot-network sensor-image python sensor.py temperature
+docker run -d --name pressure_sensor --network=iot-network sensor-image python sensor.py pressure
+docker run -d --name air_quality_sensor --network=iot-network sensor-image python sensor.py air-quality
+docker run -d --name co2_sensor --network=iot-network sensor-image python sensor.py co2
 ```
 
 ## Troubleshooting
