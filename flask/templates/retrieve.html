@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sensor Data</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h2 {
+      font-weight: 600;
+    }
+
+    table {
+      width: 80%;
+      max-width: 800px;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    th,
+    td {
+      padding: 12px 15px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #ff7700;
+      color: white;
+      font-weight: 600;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    p {
+      font-size: 18px;
+      color: #666;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>Retrieve Sensor Data Table</h2>
+
+  {% if data %}
+  <table>
+    <tr>
+      <th>Timestamp (UTC)</th>
+      <th>{{ sensor_col[0] }}</th>
+    </tr>
+    {% for entry in data %}
+    <tr>
+      <td>{{ entry.timestamp }}</td>
+      <td>{{ entry.value }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p>No data available.</p>
+  {% endif %}
+</body>
+
+</html>
