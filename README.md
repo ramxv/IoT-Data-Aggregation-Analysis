@@ -4,22 +4,6 @@
 
 This project collects, stores, and analyzes IoT sensor data using Flask and Hadoop. The system runs multiple sensor containers, a Flask API for data ingestion, and a Hadoop container for batch processing.
 
-## Folder Structure
-
-```
-project-root/
-│── flask/         # Flask application
-│   ├── app.py           # Main Flask app
-│   ├── templates/       # HTML templates (if using render_template)
-│   ├── static/          # Static files (CSS, JS, images)
-│   ├── Dockerfile       # Dockerfile for Flask container
-│
-│── sensors/             # Virtual sensor container
-│   ├── sensor.py        # Sensor script
-│   ├── Dockerfile       # Dockerfile for sensor containers
-│
-```
-
 ## Setup Instructions
 
 ### 1. Build Docker Images
