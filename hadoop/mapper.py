@@ -25,17 +25,18 @@ def haversine(lat1, lon1, lat2, lon2):
 # Leer entrada line por line
 for line in sys.stdin:
     fields = line.strip().split(",")
-    if len(fields) != 7:
-        continue  # Saltar lines mal formateadas
+    if len(fields) != 4:  # Cambiar a 4 campos
+        continue  # Saltar líneas mal formateadas
 
-    sensor_id, lat, lon, timestamp, value, sensor_type, unit = fields
+    timestamp, value, lat, lon = fields  # Sólo 4 campos
     try:
         lat, lon, value = float(lat), float(lon), float(value)
     except ValueError:
-        continue  # Ignorar lines con valores no numéricos
+        continue  # Ignorar líneas con valores no numéricos
 
     # Calcular la distancia al punto de referencia
     distance = haversine(lat, lon, REFERENCE_LAT, REFERENCE_LON)
 
     if distance <= MAX_DISTANCE_KM:
-        print(f"{sensor_type}\t{value}")  # Emitir clave-valor (sensor_type, value)
+        # Emitir clave-valor (sensor_type, value) — puedes cambiar 'sensor_type' por una constante si no lo tienes
+        print(f"sensor_value\t{value}")  # Simple clave-valor, sin sensor_type en este caso
