@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template, Response
 import sqlite3
 
 app = Flask(__name__)
@@ -78,6 +78,38 @@ def retrieve_sensor_data():
     )
 
 
+@app.route("/fetch")
+def fetch_sensor_data():
+    type_sensor = request.args.get("type")
+    conn = sqlite3.connect(DB)
+    cursor = conn.cursor()
+
+    fetch_query = """
+        SELECT m.timestamp, m.value, s.latitude, s.longitude 
+        FROM measurements m 
+        JOIN sensors s ON m.sensor_id = s.sensor_id 
+        JOIN sensortypes st ON m.type_id = st.type_id 
+        WHERE st.type_name = ?
+    """
+
+    cursor.execute(fetch_query, (type_sensor,))
+    result_fetch = cursor.fetchall()
+    conn.close()
+
+    if not type_sensor:
+        return render_template(
+            "error.html", message="Error. Missing parameter on the URL"
+        )
+
+    fetch_data = format_fetch_output(result_fetch)
+
+    return Response(
+        fetch_data,
+        mimetype="text/plain",
+        headers={"Content-disposition": f"attachment; filename={type_sensor}.txt"},
+    )
+
+
 @app.route("/store", methods=["GET"])
 def get_sensor_data():
     """Retrieve all sensor data."""
@@ -109,6 +141,18 @@ def get_sensor_data():
     ]
 
     return jsonify(sensor_data_list), 200
+
+
+def format_fetch_output(fetch_output):
+    format_fetch_rows = []
+    for rows in fetch_output:
+        string_output = [str(output) for output in rows]
+        txt_output = ",".join(string_output)
+        format_fetch_rows.append(txt_output)
+
+    txt_content = "\n".join(format_fetch_rows)
+
+    return txt_content
 
 
 def get_sensor_id(lat, lon):
