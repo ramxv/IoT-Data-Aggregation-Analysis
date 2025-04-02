@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import sys
 import math
 
@@ -33,4 +35,7 @@ for line in sys.stdin:
     distance = haversine(lat, lon, REFERENCE_LAT, REFERENCE_LON)
 
     if distance <= MAX_DISTANCE_KM:
-        print(f"sensor_value\t{value}")  # Simple clave-valor, sin sensor_type en este caso
+        print(
+            f"sensor_value\t{value}"
+        )  # Simple clave-valor, sin sensor_type en este caso
+
