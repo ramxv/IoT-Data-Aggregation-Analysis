@@ -106,7 +106,9 @@ def fetch_sensor_data():
     return Response(
         fetch_data,
         mimetype="text/plain",
-        headers={"Content-disposition": f"attachment; filename={type_sensor}.txt"},
+        headers={
+            "Content-disposition": "attachment; filename=sensor_measurements_data.txt"
+        },
     )
 
 
