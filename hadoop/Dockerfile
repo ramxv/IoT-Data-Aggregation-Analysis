@@ -8,7 +8,7 @@ ENV PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
 
 # Install required packages
 RUN apt-get update && apt-get install -y \
-    openjdk-11-jdk wget curl openssh-client openssh-server && \
+    openjdk-11-jdk wget curl openssh-client openssh-server vim && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Download and install Hadoop
