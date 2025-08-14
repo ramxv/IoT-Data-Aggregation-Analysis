@@ -42,10 +42,10 @@ docker run -d --name flask_server --network=iot-network -p 8080:8080 flask-serve
 You can run multiple sensors with different types:
 
 ```sh
-docker run -d --name temp_sensor --network=iot-network sensor-image python sensor.py temperature
-docker run -d --name pressure_sensor --network=iot-network sensor-image python sensor.py pressure
-docker run -d --name air_quality_sensor --network=iot-network sensor-image python sensor.py air-quality
-docker run -d --name co2_sensor --network=iot-network sensor-image python sensor.py co2
+docker run -d --name temp_sensor --network=iot-network sensor-image python sensordata.py temperature
+docker run -d --name pressure_sensor --network=iot-network sensor-image python sensordata.py pressure
+docker run -d --name air_quality_sensor --network=iot-network sensor-image python sensordata.py air-quality
+docker run -d --name co2_sensor --network=iot-network sensor-image python sensordata.py co2
 ```
 
 ## Troubleshooting
